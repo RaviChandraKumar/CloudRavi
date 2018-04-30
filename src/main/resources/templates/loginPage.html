@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>
+        Ravi Chandra Kumar 1994
+    </title>
+    <script>
+        function validateForm() {
+            var x = document.forms["loginForm"]["userName"].value;
+            if (x == "") {
+                alert("Name must be filled out");
+                return false;
+            }
+            var regx = /^[A-Za-z0-9_]{4,30}$/;
+            if(regx.test(x)){
+                return true;
+            }else {
+                alert("Input not as per specifications. Should be 5-30 characters and only '0-9','a-z','_' allowed!");
+                return false;
+            }
+        }
+    </script>
+</head>
+<body>
+
+<h2>Student Name: Ravi Chandra Kumar </h2>
+<h2>Student Id: 1001581994</h2>
+
+<form name="loginForm" action="#" th:action="@{/login(userName=${userName})}" onsubmit="return validateForm()">
+    <h2>Enter a userName to login
+        <input type="text" name="userName" maxlength="100"/>
+    </h2>
+    <p><input type="submit" value="LOGIN" /> <input type="reset" value="Reset" /></p>
+</form>
+
+</body>
+</html>

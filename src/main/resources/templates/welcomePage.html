@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>
+        Ravi Chandra Kumar 1994
+    </title>
+    <style>
+        table, th, td {
+            padding: 10px;
+            border-spacing: 5px;
+        }
+        table#t01 {
+            width: 100%;
+            background-color: cyan;
+        }
+    </style>
+</head>
+<body>
+<h2>Ravi Chandra Kumar 1994</h2>
+
+<div th:if="${userName}">
+    <h1> Picture Viewing for <span th:text="${userName}" maxlength="68"/></h1>
+</div>
+
+
+<div th:if="${message}">
+    <h4 th:text="${message}"/>
+</div>
+
+<div>
+    <form name="uploadForm" method="POST" enctype="multipart/form-data" action="/upload">
+        <table id="t01">
+            <tr>
+                <td>Choose Image file to upload:</td>
+                <td><input type="file" name="file" /></td>
+            </tr>
+            <tr><td>Enter title of the image: </td><td> <input type="text" name="title" /></td></tr>
+            <input type="hidden" name="userName" th:value="${userName}"/>
+            <tr>
+                <td></td><td><input type="submit" value="Upload" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<br/>
+
+<div th:if="${images}">
+        <h2> List Of All Images!</h2>
+</div>
+
+<table>
+    <tr>
+        <th></th><th></th>
+        <th>Title</th>
+        <th>Time and Date Created</th>
+        <th>last modified</th>
+        <th>modify Title</th>
+        <th>No of Likes</th>
+        <th>Rating Score</th>
+        <th></th>
+    </tr>
+    <tr th:each="img : ${images}">
+        <td>
+            <img  th:src="@{'data:image/jpeg;base64,'+${img.imgdata}}" style="width:100px;height:100px"/>
+        </td>
+        <td>
+                <td th:text="${img.title}" maxlength="5">Name of file</td>
+                <td th:text="${img.createdtime}">time file was created</td>
+                <td th:text="${img.modifiedtime}">time file was modified</td>
+                <td>
+                    <form th:name="${img.title}" method="GET" action="/updateImage" enctype="text/plain">
+                        <p>
+                            <input type="text" name="newtitle"/><br/>
+                            <input type="hidden" name="oldtitle" th:value="${img.title}" maxlength="68"/>
+                            <input type="hidden" name="userName" th:value="${userName}"/>
+                            <input type="submit" value="Submit" />
+                            <input type="reset" value="Reset" />
+                        </p>
+                    </form>
+                </td>
+                <td>
+                    <form name="like" method="GET" action="/likeImage" enctype="text/plain">
+                        <p>
+                            <input type="hidden" name="title" th:value="${img.title}" maxlength="68"/>
+                            <input type="hidden" name="userName" th:value="${userName}"/>
+                            <input type="hidden" name="nooflikes" th:value="${img.nooflikes}"/>
+                            <input type="submit" value="Like!" />
+                            <span th:text="${img.nooflikes}" name="nooflikes"/>
+                        </p>
+                    </form>
+                </td>
+                <td>
+                    <form name="like" method="GET" action="/rateImage" enctype="text/plain">
+                        <p>
+                            <span th:text="${img.getScoreToDisplay()}" name="ratingscore"/><br/>
+                            <input type="hidden" name="title" th:value="${img.title}" maxlength="68"/>
+                            <input type="hidden" name="userName" th:value="${userName}"/>
+                            <input type="hidden" name="noofratings" th:value="${img.noofratings}"/>
+                            <input type="hidden" name="ratingscore" th:value="${img.ratingscore}"/>
+                            <input type="radio" name="newscore" value="1">1</input>
+                            <input type="radio" name="newscore" value="2">2</input>
+                            <input type="radio" name="newscore" value="3">3</input>
+                            <input type="radio" name="newscore" value="4">4</input>
+                            <input type="radio" name="newscore" value="5">5</input><br/>
+                            <input type="submit" value="submit!" />
+
+                        </p>
+                    </form>
+                </td>
+
+        </td>
+    </tr>
+</table>
+
+
+
+</body>
+</html>
